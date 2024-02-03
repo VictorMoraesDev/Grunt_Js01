@@ -8,15 +8,15 @@ module.exports = function(grunt){
         less: {
             dev: {
                 files: {
-                    'build/dev/styles/main.css': 'src/styles/*.less'
+                    'build/dev/styles/main.css': 'src/styles/main.less'
                 }
             },
-            dist: {
+            production: {
                 options: {
-                    compress: true
+                    compress: true,
                 },
                 files: {
-                    'build/dist/styles/main.min.css': 'src/styles/*.less'
+                    'dist/styles/main.min.css': 'src/styles/main.less'
                 }
             }
         },
@@ -39,21 +39,21 @@ module.exports = function(grunt){
                 options: {
                     patterns: [
                         {
-                            match: 'ENDEREÇO DO CSS',
+                            match: 'ENDERECO_DO_CSS',
                             replacement: './styles/main.css' 
                         },
                         {
-                            match: 'ENDEREÇO DO JS',
-                            replacement: './scripts/main.js'
+                            match: 'ENDERECO_DO_JS',
+                            replacement: '../src/scripts/main.js'
                         }
                     ]
                 },
                 files: [
                     {
-                        expead: true,
+                        expand: true,
                         flatten: true,
                         src: ['src/index.html'],
-                        dest: 'build/dev/index.html'
+                        dest: 'dev/'
                     }
                 ]
             },
@@ -61,11 +61,11 @@ module.exports = function(grunt){
                 options: {
                     patterns: [
                         {
-                            match: 'ENDEREÇO DO CSS',
+                            match: 'ENDERECO_DO_CSS',
                             replacement: './styles/main.min.css'
                         },
                         {
-                            match: 'ENDEREÇO DO JS',
+                            match: 'ENDERECO_DO_JS',
                             replacement: './scripts/main.min.js'
                         }
                     ]
@@ -110,8 +110,14 @@ module.exports = function(grunt){
 
         
         },
-        clean: ['prebuild']
-
+        clean: ['prebuild'],
+        uglify: {
+            target: {
+                files:{
+                    'dist/scripts/main.min.js': 'src/scripts/main.js'
+                }
+            }
+        }
 
 
 
@@ -125,8 +131,8 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-replace');
     
-    grunt.registerTask('default', ['less:dev', 'watch']);
-    grunt.registerTask('build', ['less:dist', 'htmlmin:dist','replace:dist','uglify', 'clean'])
+    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('build', ['less:production', 'htmlmin:dist','replace:dist','uglify', 'clean'])
 
 
 }
