@@ -1,6 +1,9 @@
-module.exports = function(grunt) {
+module.exports = function(grunt){
+
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
 
         less: {
             dev: {
@@ -22,12 +25,12 @@ module.exports = function(grunt) {
                 files: ['src/styles/**/*.less'],
                 tasks: ['less:dev']
             },
-            html: {
+            html:{
                 files: ['src/index.html'],
                 tasks: ['replace:dev']
             },
-            js: {
-                files: ['src/scripts/**/*.js'],
+            js:{
+                files:['src/scripts/**/*.js'],
                 tasks: ['uglify:dev']
             }
         },
@@ -37,7 +40,7 @@ module.exports = function(grunt) {
                     patterns: [
                         {
                             match: 'ENDEREÇO DO CSS',
-                            replacement: './styles/main.css'
+                            replacement: './styles/main.css' 
                         },
                         {
                             match: 'ENDEREÇO DO JS',
@@ -46,12 +49,12 @@ module.exports = function(grunt) {
                     ]
                 },
                 files: [
-                   {
-                    expand: true,
-                    flatten: true,
-                    src: ['src/index.html'],
-                    dest: 'build/dev/index.html'
-                   }
+                    {
+                        expead: true,
+                        flatten: true,
+                        src: ['src/index.html'],
+                        dest: 'build/dev/index.html'
+                    }
                 ]
             },
             dist: {
@@ -68,23 +71,23 @@ module.exports = function(grunt) {
                     ]
                 },
                 files: [
-                   {
-                    expand: true,
-                    flatten: true,
-                    src: ['prebuild/index.html'],
-                    dest: 'build/dist/index.html'
-                   }
+                    {
+                        expend: true,
+                        flatten: true,
+                        src: ['prebuild/index.html'],
+                        dest: 'build/dist/index.html'
+                    }
                 ]
             }
         },
         htmlmin: {
             dist: {
-                options: {
+                options:{
                     removeComments: true,
                     collapseWhitespace: true
                 },
                 files: {
-                    'prebuild/index.html': 'src/index.html'
+                    'prebuild/index.html':'src/index.html'
                 }
             }
         },
@@ -108,19 +111,22 @@ module.exports = function(grunt) {
         
         },
         clean: ['prebuild']
+
+
+
+
     })
 
 
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-replace');
+    
+    grunt.registerTask('default', ['less:dev', 'watch']);
+    grunt.registerTask('build', ['less:dist', 'htmlmin:dist','replace:dist','uglify', 'clean'])
 
-
-
-    grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['less:production', 'htmlmin:dist', 'replace:dist', 'clean']);
 
 }
