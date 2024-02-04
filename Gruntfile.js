@@ -111,13 +111,7 @@ module.exports = function(grunt){
         
         },
         clean: ['prebuild'],
-        uglify: {
-            target: {
-                files:{
-                    'dist/scripts/main.min.js': 'src/scripts/main.js'
-                }
-            }
-        }
+        
 
 
 
